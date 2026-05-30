@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CLOTHING SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <span>🚚 Free shipping for orders over $500</span>
+    <span>|</span>
+    <span>30-day return policy</span>
+    <span>|</span>
+    <span>Hotline: 1800 1234</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-main">CLOTHING SHOP</span>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-text">
+      <p class="hero-label">New Collection — SS 2025</p>
+      <h1 class="hero-title">Your style,<br /><em>your story</em></h1>
+      <p class="hero-desc">Minimalist fashion, premium materials, designed for modern life.</p>
+
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-img-frame">
+        <div class="hero-sale-slider" id="hero-sale-slider" aria-label="Sale products slider">
+          <div class="hero-sale-track" id="hero-sale-track"></div>
+          <button class="hero-slide-btn hero-slide-prev" onclick="window.slideHeroSale(-1)" type="button" aria-label="Previous sale product">&lt;</button>
+          <button class="hero-slide-btn hero-slide-next" onclick="window.slideHeroSale(1)" type="button" aria-label="Next sale product">&gt;</button>
+          <div class="hero-sale-dots" id="hero-sale-dots"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILTER -->
+  <div class="filter-bar">
+
+    <div class="filter-group">
+      <button class="gender-pill" data-filter="women" onclick="filterGender('women')">👩 Women</button>
+      <button class="gender-pill" data-filter="men" onclick="filterGender('men')">👨 Men</button>
+      <button class="gender-pill sale-pill" data-filter="sale" onclick="filterGender('sale')">🔥 Sale</button>
+    </div>
+
+    <div class="filter-divider"></div>
+
+    <div class="filter-group">
+      <button class="cat-pill active" data-cat="all" onclick="filterCategory('all')">All</button>
+      <button class="cat-pill" data-cat="tops" onclick="filterCategory('tops')">Tops</button>
+      <button class="cat-pill" data-cat="bottoms" onclick="filterCategory('bottoms')">Bottoms</button>
+      <button class="cat-pill" data-cat="shoes" onclick="filterCategory('shoes')">Shoes</button>
+      <button class="cat-pill" data-cat="accessories" onclick="filterCategory('accessories')">Accessories</button>
+    </div>
+
+    <div style="flex:1"></div>
+
+    <div class="filter-group">
+      <div class="search-wrap">
+        <input id="search-name" type="text" placeholder="Search by name..." onkeydown="if(event.key === 'Enter') searchName()" />
+        <button onclick="searchName()">🔍</button>
+      </div>
+
+      <div class="price-filter" aria-label="Filter products by price range">
+        <div class="price-filter-top">
+          <span>Price</span>
+          <span id="price-range-label">$0 - $0</span>
+        </div>
+        <div class="price-slider">
+          <input id="price-min" type="range" min="0" max="0" value="0" oninput="window.updatePriceRange('min')" aria-label="Minimum price" />
+          <input id="price-max" type="range" min="0" max="0" value="0" oninput="window.updatePriceRange('max')" aria-label="Maximum price" />
+        </div>
+      </div>
+
+      <button class="icon-btn" title="Wishlist">❤</button>
+
+      <button class="icon-btn" onclick="toggleCart()" title="Cart">
+        🛒
+        <span class="cart-badge" id="cart-count">0</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- MAIN -->
+  <main>
+    <section class="products-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Featured Products</h2>
+          <p class="section-sub">Carefully selected for this season</p>
+        </div>
+        <a href="#" class="view-all" onclick="resetFilters();return false;">View all →</a>
+      </div>
+
+      <div id="products" class="products-grid"></div>
+    </section>
+  </main>
+
+  <!-- CART -->
+  <div class="cart-overlay" id="cart-overlay" onclick="toggleCart()"></div>
+
+  <aside class="cart-drawer" id="cart-drawer">
+    <div class="cart-header">
+      <h2>Your Cart</h2>
+      <button class="close-btn" onclick="toggleCart()">✕</button>
+    </div>
+
+    <div id="cart" class="cart-items"></div>
+
+    <div class="cart-footer">
+      <div class="cart-total-row">
+        <span>Total items:</span>
+        <span class="total-val"><span id="total">0</span> items</span>
+      </div>
+
+      <button class="btn-checkout" onclick="window.goCheckout()">Checkout →</button>
+    </div>
+  </aside>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast">✓ Added to cart</div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">CLOTHING SHOP</div>
+        <p class="footer-desc">
+          Minimalist fashion for modern people. Quality is our top priority.
+        </p>
+      </div>
+
+      <div>
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Return Policy</a></li>
+          <li><a href="#">Size Guide</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>About Us</h4>
+        <ul>
+          <li><a href="#">Brand Story</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Blog</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Connect</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">TikTok</a></li>
+          <li><a href="#">Facebook</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      © 2025 MAISON Fashion House. All rights reserved.
+    </div>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+
+  <script>
+    function toggleCart() {
+      document.getElementById('cart-drawer').classList.toggle('open');
+      document.getElementById('cart-overlay').classList.toggle('open');
+    }
+
+    window.showToast = function () {
+      const t = document.getElementById('toast');
+      t.classList.add('show');
+      setTimeout(() => t.classList.remove('show'), 2000);
+    };
+
+    function resetFilters() {
+      document.querySelectorAll('.gender-pill').forEach(l => l.classList.remove('active'));
+      document.querySelectorAll('.cat-pill').forEach(b => b.classList.remove('active'));
+      document.querySelector(".cat-pill[data-cat='all']").classList.add('active');
+      window.__resetFilters && window.__resetFilters();
+    }
+  </script>
+
+
+<section class="history-panel">
+  <h2>Stack History</h2>
+  <div id="history-list">
+    <div class="history-item">No recent actions</div>
+  </div>
+</section>
+
+</body>
+
+</html>

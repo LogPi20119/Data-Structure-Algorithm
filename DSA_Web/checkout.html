@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout — CLOTHING SHOP</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <span>🚚 Free shipping for orders over $200</span>
+    <span>|</span>
+    <span>30-day return policy</span>
+    <span>|</span>
+    <span>Hotline: 1800 1234</span>
+  </div>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <span class="logo-main">CLOTHING SHOP</span>
+    </div>
+  </header>
+
+  <!-- CHECKOUT CONTENT -->
+  <div class="checkout-page" id="checkout-page">
+    <div class="checkout-empty">Loading order summary...</div>
+  </div>
+
+  <script>
+    // DSA ALGORITHM: Read checkout data from localStorage — O(n)
+    const raw = localStorage.getItem("checkoutData");
+
+    const page = document.getElementById("checkout-page");
+
+    if (!raw) {
+      page.innerHTML = `
+        <div class="checkout-empty">
+          <p>No order found.</p>
+          <a href="index.html" class="checkout-back">← Back to shop</a>
+        </div>
+      `;
+    } else {
+      const data = JSON.parse(raw);
+      const { items, subtotal, shipping, discount, total } = data;
+
+      // DSA ALGORITHM: Rendering order items — O(n) loop
+      const itemsHTML = items.map(item => {
+        const quantity = item.quantity || 1;
+        const lineTotal = item.lineTotal || item.price * quantity;
+
+        return `
+          <div class="checkout-item">
+            <img src="${item.image}" alt="${item.name}">
+            <div class="checkout-item-info">
+              <div class="checkout-item-name">${item.name}</div>
+              <div class="checkout-item-cat">${item.category.toUpperCase()}</div>
+              <div class="checkout-item-qty">Qty: ${quantity} x $${item.price}</div>
+            </div>
+            <div class="checkout-item-price">$${lineTotal}</div>
+          </div>
+        `;
+      }).join("");
+
+      const shippingLabel = shipping === 0 ? "FREE" : `$${shipping}`;
+
+      const discountRow = discount > 0
+        ? `<div class="checkout-summary-row"><span>Discount</span><span style="color:#c0392b">−$${discount}</span></div>`
+        : "";
+
+      page.innerHTML = `
+        <h1>Order Summary</h1>
+        <p class="sub">Please review your order before confirming.</p>
+
+        <div class="checkout-items">
+          ${itemsHTML}
+        </div>
+
+        <div class="checkout-summary">
+          <div class="checkout-summary-row"><span>Subtotal</span><span>$${subtotal}</span></div>
+          <div class="checkout-summary-row"><span>Shipping</span><span>${shippingLabel}</span></div>
+          ${discountRow}
+          <div class="checkout-summary-row checkout-summary-total"><span>Total</span><span>$${total}</span></div>
+        </div>
+
+        <a href="index.html" class="checkout-back">← Back to shop</a>
+      `;
+    }
+  </script>
+
+</body>
+</html>
